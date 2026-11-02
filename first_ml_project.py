@@ -54,15 +54,15 @@ print("Testing labels:", y_test.shape)
 model = LogisticRegression(max_iter=5000)
 
 cv_scores = cross_val_score(
-    LogisticRegression(max_iter=5000),
+    model,
     X_train,
     y_train,
     cv=5,
     scoring="accuracy"
 )
 
-print("Cross-validation scores:", cv_scores)
-print("Mean CV accuracy:", cv_scores.mean())
+print("\nCross-validation scores:", cv_scores)
+print(f"Mean CV accuracy: {cv_scores.mean():.2%}")
 
 # ==========================================
 # 5. SCALED MODEL — CROSS-VALIDATION
@@ -81,8 +81,8 @@ scaled_cv_scores = cross_val_score(
     scoring="accuracy"
 )
 
-print("Scaled CV scores:", scaled_cv_scores)
-print("Mean scaled CV accuracy:", scaled_cv_scores.mean())
+print("\nScaled CV scores:", scaled_cv_scores)
+print(f"Mean scaled CV accuracy: {scaled_cv_scores.mean():.2%}")
 
 # ==========================================
 # 6. FINAL MODEL — TEST SET EVALUATION
@@ -98,7 +98,7 @@ y_pred_scaled = scaled_model.predict(X_test)
 
 test_accuracy = accuracy_score(y_test, y_pred_scaled)
 
-print(f"Scaled test accuracy: {test_accuracy:.2%}")
+print(f"\nScaled test accuracy: {test_accuracy:.2%}")
 
 cm = confusion_matrix(y_test, y_pred_scaled)
 
@@ -125,6 +125,9 @@ for i in range(cm.shape[0]):
         plt.text(j, i, cm[i, j], ha="center", va="center" , color=color)
 
 plt.tight_layout()
+
+plt.savefig("confusion_matrix.png", dpi=150)
+
 plt.show()
 
 print("\nClassification report:")
